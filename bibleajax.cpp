@@ -91,6 +91,19 @@ int main() {
 	  else
 		  validInput = true;
   }
+
+  validInput = false;
+  if (nv != cgi.getElements().end()) {
+	  int verses = nv->getIntegerValue();
+	  if (verses > 300) {
+		  cout << "<p>The number of requests (" << verses << ") is too high.</p>" << endl;
+	  }
+	  else if (verses <= 0) {
+		  cout << "<p>The amount of verses must be a positive number.</p>" << endl;
+	  }
+	  else
+		  validInput = true;
+  }
   /* TO DO: PUT CODE HERE TO CALL YOUR BIBLE CLASS FUNCTIONS
    *        TO LOOK UP THE REQUESTED VERSES
    */
@@ -105,13 +118,16 @@ int main() {
   if (webBible.error(result) != "") {}
   else {
 	  int numVerses = nv->getIntegerValue();
-	  lVerse.display(numVerses);
-	  if (numVerses > 0 && numVerses != NULL) {
-			for (int i = 1; i < numVerses; i++) {
-				Verse verseNext = webBible.nextVerse(result);
-				cout << endl;
-				verseNext.displaySans();
-			}
+	  if (numVerses <= 0 || numVerses > 300) {}
+	  else {
+		  lVerse.display(numVerses);
+		  if (numVerses > 0 && numVerses != NULL) {
+			  for (int i = 1; i < numVerses; i++) {
+				  Verse verseNext = webBible.nextVerse(result);
+				  cout << endl;
+				  verseNext.displaySans();
+			  }
+		  }
 	  }
 	  cout << endl;
   }
