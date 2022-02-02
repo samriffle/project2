@@ -120,12 +120,22 @@ int main() {
 	  int numVerses = nv->getIntegerValue();
 	  if (numVerses <= 0 || numVerses > 300) {}
 	  else {
-		  lVerse.display(numVerses);
-		  if (numVerses > 0 && numVerses != NULL) {
-			  for (int i = 1; i < numVerses; i++) {
-				  Verse verseNext = webBible.nextVerse(result);
-				  cout << endl;
-				  verseNext.displaySans();
+		  if (lVerse.getVerse() == "Uninitialized Verse!") {
+			  cout << "Search out of bounds" << endl;
+		  }
+		  else {
+			  lVerse.display(numVerses);
+			  if (numVerses > 0 && numVerses != NULL) {
+				  for (int i = 1; i < numVerses; i++) {
+					  Verse verseNext = webBible.nextVerse(result);
+					  cout << endl;
+					  if (verseNext.getVerse() == "Uninitialized Verse!") {
+						  break;
+					  }
+					  else {
+						  verseNext.displaySans();
+					  }
+				  }
 			  }
 		  }
 	  }
