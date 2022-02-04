@@ -60,7 +60,8 @@ function getresponse () {
 		+ "&book=" + document.getElementById('book').value
 		+ "&chapter=" + document.getElementById('chapter').value
 		+ "&verse=" + document.getElementById('verse').value
-		+ "&num_verse=" + document.getElementById('num_verse').value,
+		+ "&num_verse=" + document.getElementById('num_verse').value
+		+ "&bible=" + document.getElementById('bible').value,
 		true); // true indicates asynchronous request
 	XMLHttp.onreadystatechange=function() { // callback function
 		if (XMLHttp.readyState == XMLHttp.DONE)
@@ -91,6 +92,19 @@ function getresponse () {
 
 <hr>
 <table>
+<tr>
+<td align=right valign=top>Bible</td>
+<td align=left valign=top>
+<select name="bible" id=bible>
+<option value="1">World English Bible
+<option value="2">King James Version
+<option value="3">Darby Translation
+<option value="4">Young’s Literal Translation
+<option value="5">Webster Translation
+</select>
+</td>
+</tr>
+
 <tr>
 <td align=right valign=top>Book</td>
 <td align=left valign=top>

@@ -67,10 +67,10 @@ bool Ref::operator==(const Ref r) {
 
 // OPTIONAL: define < and > comparisons
 
-// TO DO: modify display function to show book name instead of book number
+// TO DO: modify display function to show book name instead of book number            //Store all lines in list, wait to display until you know what last verse'll be
 void Ref::display(const int vNum) { 	// Display Reference
     if (book > 0 && vNum > 1) {
-	cout << "<p>" << "<b>" << books[book - 1] << " " << chap << ":" << verse << "-" << verse + vNum - 1 << "</b>" << "</p>";
+	    cout << "<p>" << "<b>" << books[book - 1] << " " << chap << ":" << verse << "-" << "..." << "</b>" << "</p>";
     }
     else if (book > 0) {
         cout << "<p>" << "<b>" << books[book - 1] << " " << chap << ":" << verse << "</b>" << "</p>";

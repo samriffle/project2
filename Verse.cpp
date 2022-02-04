@@ -43,11 +43,11 @@ Ref Verse::getRef() {
 // display reference and verse
 void Verse::display(const int vNum) {
     verseRef.display(vNum);
-    cout << " " << verseText;
+    cout << " " << "<sub>" << getRef().getVerse() << "</sub>" << verseText;
  }
 
 ////////////////////////////////////////////////////////// New for project 2 formatting
 // display only the verse
 void Verse::displaySans() {
-    cout << " " << verseText;
+    cout << " " << "<sub>" << getRef().getVerse() << "</sub>" << verseText;
 }

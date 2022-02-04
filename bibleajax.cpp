@@ -45,6 +45,7 @@ int main() {
   // GET THE INPUT DATA
   // browser sends us a string of field name/value pairs from HTML form
   // retrieve the value for each appropriate field name
+  form_iterator bibleVersion = cgi.getElement("bible");
   form_iterator st = cgi.getElement("search_type");
   form_iterator book = cgi.getElement("book");
   form_iterator chapter = cgi.getElement("chapter");
@@ -96,7 +97,8 @@ int main() {
   if (nv != cgi.getElements().end()) {
 	  int verses = nv->getIntegerValue();
 	  if (verses > 300) {
-		  cout << "<p>The number of requests (" << verses << ") is too high.</p>" << endl;
+		  cout << "<p>The number of requests (" << verses << ") is very high.</p>" << endl;
+		  validInput = true;
 	  }
 	  else if (verses <= 0) {
 		  cout << "<p>The amount of verses must be a positive number.</p>" << endl;
@@ -107,34 +109,60 @@ int main() {
   /* TO DO: PUT CODE HERE TO CALL YOUR BIBLE CLASS FUNCTIONS
    *        TO LOOK UP THE REQUESTED VERSES
    */
-  Bible webBible("/home/class/csc3004/Bibles/web-complete");
+  Bible* webBible;
+  int bibleVersionNum = bibleVersion->getIntegerValue();
+  if (bibleVersionNum == 2) {
+	  webBible = new Bible("/home/class/csc3004/Bibles/kjv-complete");
+  }
+  else if (bibleVersionNum == 3) {
+	  webBible = new Bible("/home/class/csc3004/Bibles/dby-complete");
+  }
+  else if (bibleVersionNum == 4) {
+	  webBible = new Bible("/home/class/csc3004/Bibles/ylt-complete");
+  }
+  else if (bibleVersionNum == 5) {
+	  webBible = new Bible("/home/class/csc3004/Bibles/webster-complete");
+  }
+  else {
+	  webBible = new Bible("/home/class/csc3004/Bibles/web-complete");
+  }
   int verseNum = verse->getIntegerValue();
   int bookNum = book->getIntegerValue();
   int chapterNum = chapter->getIntegerValue();
   Ref ref(bookNum, chapterNum, verseNum);
   Verse lVerse;
   LookupResult result;
-  lVerse = webBible.lookup(ref, result);
-  if (webBible.error(result) != "") {}
-  else {
+  lVerse = webBible->lookup(ref, result);
+  if (/*webBible.error(result) != ""*/result != SUCCESS) {} // Should compare result variable with SUCCESS from bible.h (Use error when not a success)
+  else { // success
 	  int numVerses = nv->getIntegerValue();
-	  if (numVerses <= 0 || numVerses > 300) {}
+	  if (numVerses <= 0) {}
 	  else {
-		  if (lVerse.getVerse() == "Uninitialized Verse!") {
+		  if (/*lVerse.getVerse() == "Uninitialized Verse!" */result != SUCCESS) { //////////////////////////////////////////////////////////////////////////////////////////////// TODO: Dont check with strings, CHECK WITH ERROR CODES
 			  cout << "Search out of bounds" << endl;
 		  }
 		  else {
 			  lVerse.display(numVerses);
 			  if (numVerses > 0 && numVerses != NULL) {
-				  for (int i = 1; i < numVerses; i++) {
-					  Verse verseNext = webBible.nextVerse(result);
+				  Verse preV = lVerse; // Helps check if next verse is rolled over into another chapter
+				  for (int i = 1; i < numVerses; i++) { // Loop to print any verses after first
+					  Verse verseNext = webBible->nextVerse(result);
 					  cout << endl;
-					  if (verseNext.getVerse() == "Uninitialized Verse!") {
+					  if (/*verseNext.getVerse() == "Uninitialized Verse!"*/result != SUCCESS) { // Change to use result nextVerse returns (status code)
 						  break;
 					  }
-					  else {
-						  verseNext.displaySans();
+					  else { // Cons for splitting up books and chapters
+						  if (verseNext.getRef().getChap() == preV.getRef().getChap() + 1) { 
+							  verseNext.display(numVerses - i);
+						  }
+						  else if (verseNext.getRef().getBook() == preV.getRef().getBook() + 1) {
+							  verseNext.display(numVerses - i); // TODO: Make new branch for ending on a verse in the middle o a chapter, ref showing that ending verse
+						  }
+						  else {
+							  verseNext.displaySans(); 
+						  }
 					  }
+					  preV = verseNext;
 				  }
 			  }
 		  }

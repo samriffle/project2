@@ -114,6 +114,7 @@ Verse Bible::nextVerse(LookupResult& status) {
 			return aVerse;
 		}
 		else {
+			status = SUCCESS;
 			 Verse pVerse(line);
 			 return pVerse;
 		}
