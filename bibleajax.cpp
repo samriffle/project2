@@ -111,7 +111,7 @@ int main() {
    */
   Bible* webBible;
   int bibleVersionNum = bibleVersion->getIntegerValue();
-  if (bibleVersionNum == 2) {
+  if (bibleVersionNum == 2) { // Determine version of Bible to use
 	  webBible = new Bible("/home/class/csc3004/Bibles/kjv-complete");
   }
   else if (bibleVersionNum == 3) {
@@ -133,13 +133,12 @@ int main() {
   Verse lVerse;
   LookupResult result;
   lVerse = webBible->lookup(ref, result);
-  if (/*webBible.error(result) != ""*/result != SUCCESS) {} // Should compare result variable with SUCCESS from bible.h (Use error when not a success)
-  else { // success
+  if (result != SUCCESS) {} 
+  else { // successful search
 	  int numVerses = nv->getIntegerValue();
 	  if (numVerses <= 0) {}
 	  else {
-		  if (/*lVerse.getVerse() == "Uninitialized Verse!" */result != SUCCESS) { //////////////////////////////////////////////////////////////////////////////////////////////// TODO: Dont check with strings, CHECK WITH ERROR CODES
-			  cout << "Search out of bounds" << endl;
+		  if (result != SUCCESS) { 
 		  }
 		  else {
 			  lVerse.display(numVerses);
@@ -148,7 +147,7 @@ int main() {
 				  for (int i = 1; i < numVerses; i++) { // Loop to print any verses after first
 					  Verse verseNext = webBible->nextVerse(result);
 					  cout << endl;
-					  if (/*verseNext.getVerse() == "Uninitialized Verse!"*/result != SUCCESS) { // Change to use result nextVerse returns (status code)
+					  if (result != SUCCESS) { // Change to use result nextVerse returns (status code)
 						  break;
 					  }
 					  else { // Cons for splitting up books and chapters
@@ -156,7 +155,7 @@ int main() {
 							  verseNext.display(numVerses - i);
 						  }
 						  else if (verseNext.getRef().getBook() == preV.getRef().getBook() + 1) {
-							  verseNext.display(numVerses - i); // TODO: Make new branch for ending on a verse in the middle o a chapter, ref showing that ending verse
+							  verseNext.display(numVerses - i); 
 						  }
 						  else {
 							  verseNext.displaySans(); 
@@ -169,26 +168,5 @@ int main() {
 	  }
 	  cout << endl;
   }
-
-  /* SEND BACK THE RESULTS
-   * Finally we send the result back to the client on the standard output stream
-   * in HTML text format.
-   * This string will be inserted as is inside a container on the web page, 
-   * so we must include HTML formatting commands to make things look presentable!
-   */
-  /*
-  if (validInput) {
-  
-	cout << "Search Type: <b>" << **st << "</b>" << endl;
-	cout << "<p>Your result: "
-		 << **book << " " << **chapter << ":" << **verse 
-		 << "<em> The " << **nv
-		 << " actual verse(s) retreived from the server should go here!</em></p>" << endl;
-  
-  }
-  else {
-	  cout << "<p>Invalid Input: <em>report the more specific problem.</em></p>" << endl;
-  }
-  */
   return 0;
 }
